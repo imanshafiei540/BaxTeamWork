@@ -18,7 +18,7 @@
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}
       {% endif %}
-        {& for message in get_flashed_messages() %}
+        {% for message in get_flashed_messages() %}
           {{ message }}
         {% endfor %}
     </div>

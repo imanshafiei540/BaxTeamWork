@@ -11,7 +11,7 @@
       <h2>Welcome to Flask!</h2>
       <br>
       <p>Click <a href="/logout">here</a> to go logout.</p>
-        {& for message in get_flashed_messages() %}
+        {% for message in get_flashed_messages() %}
           {{ message }}
         {% endfor %}
     </div>
