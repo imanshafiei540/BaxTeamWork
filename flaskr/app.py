@@ -1,12 +1,32 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+from functools import wraps
+import sqlite3
 
 app = Flask(__name__)
 
 app.secret_key = "secret key"
+app.database = "database.db"
+
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('You need to login first.')
+            return redirect(url_for('login'))
+    return wrap
+
 
 @app.route('/')
+@login_required
 def home():
-    return render_template('index.html')
+    g.db = connect_db()
+    cur = g.db.execute('select * from posts')
+    posts = [dict(title = row[0], description = row[1]) for row in cur.fetchall()]
+    g.db.close()
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/welcome')
@@ -15,6 +35,7 @@ def welcome():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('logged_in', None)
     flash('you were just logged out!')
@@ -32,6 +53,10 @@ def login():
             flash('you were just logged in!')
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
+
+
+def connect_db():
+    return sqlite3.connect(app.database)
 
 
 if __name__ == '__main__':
