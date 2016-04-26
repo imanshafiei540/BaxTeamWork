@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from app import app
 import unittest
 
@@ -27,7 +29,7 @@ class FlaskTestCase(unittest.TestCase):
     def test_inorrect_login(self):
         tester = app.test_client(self)
         response = tester.post("/login", data=dict(username="wrong", password="wrong"), follow_redirects=True)
-        self.assertIn(b'Invalid Credentials. Please try again.', response.data)
+        self.assertIn(b'. نام کاربری یا رمز عبور اشتباه است', response.data)
 
 
     def test_logout(self):

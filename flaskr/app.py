@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, url_for, redirect, session, flash, g
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request, url_for, redirect, session, flash
 from functools import wraps
 import sqlite3
+
 
 app = Flask(__name__)
 
@@ -20,13 +23,8 @@ def login_required(f):
 
 
 @app.route('/')
-@login_required
 def home():
-    g.db = connect_db()
-    cur = g.db.execute('select * from posts')
-    posts = [dict(title = row[0], description = row[1]) for row in cur.fetchall()]
-    g.db.close()
-    return render_template('index.html', posts=posts)
+    return render_template('main.html')
 
 
 @app.route('/welcome')
@@ -42,17 +40,62 @@ def logout():
     return redirect(url_for('welcome'))
 
 
-@app.route('/login', methods=['GET','POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    con = sqlite3.connect('login.db')
+    cur = con.execute('select * from logint')
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
+        for row in cur.fetchall():
+            if request.form['username'] == row[0] and request.form['password'] == row[1]:
+                session['logged_in'] = True
+                flash('you were just logged in!')
+                return redirect(url_for('welcome'))
         else:
-            session['logged_in'] = True
-            flash('you were just logged in!')
-            return redirect(url_for('home'))
-    return render_template('login.html', error=error)
+            error = '. نام کاربری یا رمز عبور اشتباه است'
+            error = error.decode('utf-8')
+    return render_template('login2.html', error=error)
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    error = None
+    con = sqlite3.connect('login.db')
+    with con:
+        cur = con.cursor()
+        data_list = con.execute('select * from logint')
+        cnt = 0
+        if request.method == 'POST':
+            for row in data_list.fetchall():
+
+                print 1
+                if request.form['username'] == row[0]:
+                    cnt += 1
+                    error = '.نام کاربری تکراری است'
+                    error = error.decode('utf-8')
+                elif request.form['email'] == row[2]:
+                    cnt += 1
+                    error = '.پست الکترونیک تکراری است'
+                    error = error.decode('utf-8')
+                elif request.form['username'] == '' or request.form['password'] == '' or request.form['email'] == '' or request.form['password2']=='':
+                    error = '.نام کاربری یا رمز عبور نباید خالی باشد'
+                    error = error.decode('utf-8')
+                    cnt += 1
+                    print 3
+                elif request.form['password'] < 8:
+                    cnt += 1
+                    error = '.رمز عبور نباید کمتر از 8 حرف باشد'
+                    error = error.decode('utf-8')
+                elif request.form['password'] != request.form['password2']:
+                    cnt += 1
+                    error = '.رمز عبور مانند هم نیستند'
+                    error = error.decode('utf-8')
+            if cnt == 0:
+                flash('you just signed up!')
+                cur.execute('insert into  logint (username, password, email) values(?, ?, ?)', [request.form['username'], request.form['password'], request.form['email']])
+                return redirect(url_for('login'))
+
+    return render_template('signup.html', error=error)
 
 
 def connect_db():
@@ -61,4 +104,3 @@ def connect_db():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

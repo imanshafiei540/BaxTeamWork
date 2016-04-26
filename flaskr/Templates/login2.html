@@ -3,7 +3,7 @@
     <meta charset="utf-8" >
 	<title>title</title>
     <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -13,7 +13,7 @@
     <style>
         @font-face {
             font-family: "MyFont";
-            src: url(Far_DastNevis.otf) format("truetype") ;
+            src: url({{url_for('static',filename='css/Far_DastNevis.otf') }}) format("truetype") ;
         }
 
 body {
@@ -66,28 +66,35 @@ h4 {
 <div class="container">
     <div class="row">
         <div class="col-md-offset-5 col-md-3">
-            <div class="form-login">
+            <form method="post" action="">
+            <div  class="form-login">
             <h4>خوش آمدید</h4>
-            <input style="text-align: right" type="text" id="userName" class="form-control input-sm chat-input" placeholder=" نام کاربری" />
-            </br>
-            <input style="text-align: right" type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="رمز عبور" />
-            </br>
+
+                <input style="text-align: right" type="text" id="userName" class="form-control input-sm chat-input" placeholder= " نام کاربری" name="username"/>
+                </br>
+                <input style="text-align: right" type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="رمز عبور" name="password"/>
+                </br>
+
             <div class="wrapper">
             <span class="group-btn">
-                <a href="#" class="btn btn-primary btn-md">ورود <i class="fa fa-sign-in"></i></a>
-                <p style="text-align: right;padding-top: 20px"><a href="signup.html">ثبت نام </a>&nbsp;یا &nbsp;
+                <button type="submit"  class="btn btn-primary btn-md">ورود <i class="fa fa-sign-in"></i></button>
+                <p style="text-align: right;padding-top: 20px"><a href="/registration">ثبت نام </a>&nbsp;یا &nbsp;
                 <a href="forget.html">فراموشی رمز عبور </a> </p>
 
+            {% if error %}
+                <p class="error"> {{ error }}</p>
+            {% endif %}
             </span>
             </div>
             </div>
-
+            </form>
         </div>
     </div>
 </div>
-
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
 	</body>
 
-</form>
-</body>
+
 </html>
