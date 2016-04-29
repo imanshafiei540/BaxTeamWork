@@ -46,8 +46,10 @@ def login():
     con = sqlite3.connect('login.db')
     cur = con.execute('select * from logint')
     if request.method == 'POST':
+        username = request.form['username']
+        new_username = username.lower()
         for row in cur.fetchall():
-            if request.form['username'] == row[0] and request.form['password'] == row[1]:
+            if new_username == row[0] and request.form['password'] == row[1]:
                 session['logged_in'] = True
                 flash('you were just logged in!')
                 return redirect(url_for('welcome'))
@@ -66,10 +68,10 @@ def registration():
         data_list = con.execute('select * from logint')
         cnt = 0
         if request.method == 'POST':
+            username = request.form['username']
+            new_username = username.lower()
             for row in data_list.fetchall():
-
-                print 1
-                if request.form['username'] == row[0]:
+                if new_username == row[0]:
                     cnt += 1
                     error = '.نام کاربری تکراری است'
                     error = error.decode('utf-8')
@@ -92,7 +94,7 @@ def registration():
                     error = error.decode('utf-8')
             if cnt == 0:
                 flash('you just signed up!')
-                cur.execute('insert into  logint (username, password, email) values(?, ?, ?)', [request.form['username'], request.form['password'], request.form['email']])
+                cur.execute('insert into  logint (username, password, email) values(?, ?, ?)', [new_username, request.form['password'], request.form['email']])
                 return redirect(url_for('login'))
 
     return render_template('signup.html', error=error)
