@@ -2,10 +2,10 @@
 <head>
     <link href="{{ url_for('static', filename='css/semantic.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.css" rel="stylesheet">
-    <!-- Site made with Mobirise Website Builder v2.9, https://mobirise.com -->
+    <!-- Site made with  Website Builder v2.9, https://.com -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="generator" content="Mobirise v2.9, mobirise.com">
+  <meta name="generator" content=" v2.9, .com">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
   <meta name="description" content="Free Responsive Website Maker. Create awesome mobile-first websites. Easy and fast - No coding!">
@@ -56,7 +56,7 @@ body{text-align:center;
   <i class="circular users icon"></i>
   Niggas's Socia Network
 </h2>
-    <section class="engine"><a rel="external" href="https://mobirise.com">Mobirise web page design software
+    <section class="engine"><a rel="external" href="https://.com"> web page design software
 </a></section>
     <section class="mbr-navbar mbr-navbar--freeze mbr-navbar--absolute mbr-navbar--transparent mbr-navbar--sticky mbr-navbar--auto-collapse" id="menu-5">
     <div class="mbr-navbar__section mbr-section">
@@ -64,14 +64,14 @@ body{text-align:center;
             <div class="mbr-navbar__container">
                 <div class="mbr-navbar__column mbr-navbar__column--s mbr-navbar__brand">
                     <span class="mbr-navbar__brand-link mbr-brand mbr-brand--inline">
-                        <span class="mbr-brand__logo"><a href="https://mobirise.com"><img class="mbr-navbar__brand-img mbr-brand__img" src="{{ url_for('static', filename='img/logo.png')}}" alt="Mobirise"></a></span>
-                        <span class="mbr-brand__name"><a class="mbr-brand__name text-white" href="https://mobirise.com">MOBIRISE</a></span>
+                        <span class="mbr-brand__logo"><a href="https://.com"><img class="mbr-navbar__brand-img mbr-brand__img" src="{{ url_for('static', filename='img/logo.png')}}" alt=""></a></span>
+                        <span class="mbr-brand__name"><a class="mbr-brand__name text-white" href="https://.com"></a></span>
                     </span>
                 </div>
                 <div class="mbr-navbar__hamburger mbr-hamburger text-white"><span class="mbr-hamburger__line"></span></div>
                 <div class="mbr-navbar__column mbr-navbar__menu">
                     <nav class="mbr-navbar__menu-box mbr-navbar__menu-box--inline-right">
-                        <div class="mbr-navbar__column"><ul class="mbr-navbar__items mbr-navbar__items--right mbr-buttons mbr-buttons--freeze mbr-buttons--right btn-decorator mbr-buttons--active mbr-buttons--only-links"><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://mobirise.com">HOME</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://mobirise.com">ABOUT</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://mobirise.com">CONTACT</a></li></ul></div>
+                        <div class="mbr-navbar__column"><ul class="mbr-navbar__items mbr-navbar__items--right mbr-buttons mbr-buttons--freeze mbr-buttons--right btn-decorator mbr-buttons--active mbr-buttons--only-links"><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://.com">HOME</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://.com">ABOUT</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="https://.com">CONTACT</a></li></ul></div>
 
                     </nav>
                 </div>
@@ -99,8 +99,9 @@ body{text-align:center;
 <div style="background-color: lightgray" class="ui segment">
               <div class="ui big image">
           <div class="ui black ribbon label">
-            <i class="hotel icon"></i> POST{{x[0]}}
+            <i class="hotel icon"></i> POST FROM {{x[3]}} IN {{ x[4] }}
           </div>
+
           <img width="100%" height="100%" src="{{x[2]}}">
     </div>
 
@@ -127,12 +128,18 @@ body{text-align:center;
 
 
 
-      <form style="padding-right: 10%;padding-left: 10%" method="post" action="" class="ui reply form">
+      <form enctype="multipart/form-data" style="padding-right: 10%;padding-left: 10%" method="post" action="" class="ui reply form">
         <div class="field">
-          <textarea name="post"></textarea>
+          <textarea name="caption"></textarea>
         </div>
-
+<div class="fileupload fileupload-new" data-provides="fileupload">
+    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select file</span>
+    <span class="fileupload-exists">Change</span>         <input type="file" name="image" /></span>
+    <span class="fileupload-preview"></span>
+    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+  </div>
           <button type="submit" class="fluid ui blue button">Post it!</button>
+
 
       </form>
 
@@ -142,12 +149,6 @@ body{text-align:center;
 
 
 
-  <div class="fileupload fileupload-new" data-provides="fileupload">
-    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select file</span>
-    <span class="fileupload-exists">Change</span>         <input type="file" /></span>
-    <span class="fileupload-preview"></span>
-    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-  </div>
 
 
 <script>
