@@ -26,7 +26,7 @@ def allowed_file(filename):
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
-        print session
+
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
@@ -48,7 +48,7 @@ def welcome():
         if flag == 2:
             user = x
             break
-    print user
+
     if request.method == 'POST':
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M")
@@ -66,7 +66,7 @@ def welcome():
     dic = cursor.fetchall()
     for i in range(len(dic)):
             dic[i] =  (dic[i][0],dic[i][1].encode('utf-8'),dic[i][2].encode('utf-8'), dic[i][3].encode('utf-8'), dic[i][4].encode('utf-8'))
-    print dic
+
     return render_template('hello.html',DATA = dic ,user = user)
 
 
@@ -88,11 +88,11 @@ def send_file3(filename,number):
 def post(number):
     conn = sqlite3.connect('test.db')
     flag = 0
-    print session
+
     for x in session:
         flag += 1
         if flag == 2:
-            print 1
+
             user = x
             break
 
@@ -100,7 +100,7 @@ def post(number):
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M")
         COMMENT = request.form['comment']
-        print COMMENT, number
+
 
         conn.execute("insert into COMMENT (comment, F_KEY,creator,time) values (?, ?,?,?);",(COMMENT, number, user, time))
         conn.commit()
@@ -115,6 +115,7 @@ def post(number):
             caption = row[1]
             image = row[2]
             creator = row[3]
+            comment_time = row[4]
             break
 
     cursor2 = conn.execute("SELECT ID, comment, F_KEY, creator, time from COMMENT")
@@ -127,7 +128,7 @@ def post(number):
             cre = row[3]
             time = row[4]
             com_dic[str(COM_ID)] = (COM.encode('utf-8'), cre.encode('utf-8'), time.encode('utf-8'))
-    cursor3 = conn.execute("SELECT ID, reply, F_KEY_POST,F_KEY_COMMENT, creator, time from REPLY")
+    cursor3 = conn.execute("SELECT ID, reply, F_KEY_POST,F_KEY_COMMENT, creator, time, user_image from REPLY")
     rep_dic = {}
     for row in cursor3:
         if str(row[2]) == number.encode('utf-8') :
@@ -135,14 +136,16 @@ def post(number):
             com_num = row[3]
             cre_rep = row[4]
             time = row[5]
-            rep_dic[com_num] = (REP, cre_rep,time)
-    return render_template('post.html', ID = id, CAP = caption, IMG = image,post_creator = creator ,COMMENT = com_dic, rep_dic = rep_dic, user = user)
+            rep_image = row[6]
+            rep_dic[com_num] = (REP, cre_rep,time,rep_image)
+
+    return render_template('post.html', ID = id, CAP = caption, IMG = image,post_creator = creator ,COMMENT = com_dic, rep_dic = rep_dic, user = user, ct = comment_time)
 
 @app.route('/logout')
 @login_required
 def logout():
     session.pop('logged_in', None)
-    print session
+
     flash('you were just logged out!')
     return redirect(url_for('welcome'))
 
@@ -156,11 +159,13 @@ def login():
     error = None
     con = sqlite3.connect('login.db')
     cur = con.execute('select * from logint')
+
     if request.method == 'POST':
         username = request.form['username']
         new_username = username.lower()
         for row in cur.fetchall():
             if new_username == row[0] and request.form['password'] == row[1]:
+                user_img = row[4]
                 session['logged_in'] = True
                 session[username] = True
                 flash('you were just logged in!')
@@ -182,7 +187,7 @@ def registration():
         if request.method == 'POST':
             username = request.form['username']
             new_username = username.lower()
-            print new_username
+
             for row in data_list.fetchall():
                 if new_username == row[0]:
                     cnt += 1
@@ -196,7 +201,7 @@ def registration():
                     error = '.نام کاربری یا رمز عبور نباید خالی باشد'
                     error = error.decode('utf-8')
                     cnt += 1
-                    print 3
+
                 elif request.form['password'] < 8:
                     cnt += 1
                     error = '.رمز عبور نباید کمتر از 8 حرف باشد'
@@ -214,62 +219,83 @@ def registration():
     return render_template('signup.html', error=error)
 
 
+def getUserImage(user):
+    con = sqlite3.connect('login.db')
+    cur = con.execute('select * from logint')
+    for row in cur.fetchall():
+        if user == row[0] :
+            return row[4]
+
 
 
 @app.route('/post/<number>/comment/<number2>', methods=['GET', 'POST'])
 @login_required
 
 def reply(number,number2):
+
+    flag = 0
+    for x in session:
+        flag += 1
+        if flag == 2:
+            user = x
+            break
+
     conn = sqlite3.connect('test.db')
     if request.method == 'POST':
+        now = datetime.datetime.now()
+        time = now.strftime("%Y-%m-%d %H:%M")
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M")
         reply = request.form['reply']
         number = number.encode('utf-8')
         number2 = number2.encode('utf-8')
-        conn.execute("insert into REPLY (reply, F_KEY_POST, F_KEY_COMMENT) values (?, ?,?);",(reply, number, number2))
+        conn.execute("insert into REPLY (reply, F_KEY_POST, F_KEY_COMMENT, CREATOR,USER_IMAGE,TIME) values (?, ?,?,?,?,?);",(reply, number, number2, user, getUserImage(user),time))
         conn.commit()
         conn.close()
 
     conn = sqlite3.connect('test.db')
-    cursor = conn.execute("SELECT id, caption, image  from POST")
+    cursor = conn.execute("SELECT id, caption, image, creator, user_image,time  from POST")
     for row in cursor:
         if str(row[0]) == number.encode('utf-8'):
 
             id = row[0]
             caption = row[1]
             image = row[2]
+            post_creator = row[3]
+            post_user_image = row[4]
+            post_time = row[5]
 
 
             break
 
-    cursor2 = conn.execute("SELECT ID, comment, F_KEY from COMMENT")
+    cursor2 = conn.execute("SELECT ID, comment, F_KEY, creator, user_image,time  from COMMENT")
     for row in cursor2:
-        print 111111111111111111111111
-        print str(row[0])
-        print number2.encode('utf-8')
-
+        comment_content = []
         if str(row[0]) == number2.encode('utf-8'):
             COM = row[1]
-            print COM
+            creator = row[3]
+            user_image = row[4]
+            time = row[5]
+            comment_content+=[COM , creator ,user_image,time ]
             break
 
 
 
-    cursor3 = conn.execute("SELECT ID, reply, F_KEY_POST,F_KEY_COMMENT from REPLY")
-    rep_dic = []
+    cursor3 = conn.execute("SELECT ID, reply, F_KEY_POST,F_KEY_COMMENT,creator, user_image,time from REPLY")
+    rep_dic = {}
     for row in cursor3:
 
         if str(row[2]) == number.encode('utf-8') and str(row[3]) == number2.encode('utf-8'):
-
             REP = row[1]
-            print REP
             com_num = row[3]
-            print com_num
-            rep_dic.append(REP.encode('utf-8'))
+            reply_cre = row[4]
+            reply_user_img = row[5]
+            time_reply = row[6]
+            rep_dic[com_num] = (REP,reply_cre, reply_user_img,time_reply)
 
-    print rep_dic
-    return render_template('reply.html',number2 = number2, number = number, rep_dic = rep_dic, ID = id, CAP = caption, IMG = image, com_text = COM)
+
+
+    return render_template('reply.html',number2 = number2, number = number, rep_dic = rep_dic, ID = id, CAP = caption, IMG = image, comment_content = comment_content,pc = post_creator,pu = post_user_image, pt = post_time)
 
 
 
