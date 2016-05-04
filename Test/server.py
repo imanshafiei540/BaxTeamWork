@@ -297,6 +297,11 @@ def reply(number,number2):
 
     return render_template('reply.html',number2 = number2, number = number, rep_dic = rep_dic, ID = id, CAP = caption, IMG = image, comment_content = comment_content,pc = post_creator,pu = post_user_image, pt = post_time)
 
+@app.route('/people', methods=['GET', 'POST'])
+@login_required
+
+def people():
+    return render_template('people.html')
 
 
 if __name__ == '__main__':
