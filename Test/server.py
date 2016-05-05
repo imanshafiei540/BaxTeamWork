@@ -49,6 +49,7 @@ def welcome():
             user = x
             break
     print user
+    user=session['user']
     if request.method == 'POST':
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M")
@@ -69,6 +70,42 @@ def welcome():
     print dic
     return render_template('hello.html',DATA = dic ,user = user)
 
+@app.route('/myposts' , methods=["GET","POST"])
+def myposts():
+    conn =sqlite3.connect('test.db')
+    curr_user=session['user']
+    print curr_user
+    cursor=conn.execute("SELECT id,caption,image,creator,time from POST")
+    dic = cursor.fetchall()
+    if request.method == 'POST':
+        print "it worked!"
+        now = datetime.datetime.now()
+        time = now.strftime("%Y-%m-%d %H:%M")
+        cap = request.form['caption']
+        file = request.files['image']
+        id=request.form['id']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = UPLOAD_FOLDER + filename
+        cursor.execute("UPDATE POST SET  CAPTION= ? ,IMAGE = ?,CREATOR = ?,TIME = ? WHERE id= ? ",(cap,path,user,time,id))
+        conn.commit()
+        conn.close()
+
+    for i in range(len(dic)):
+            dic[i] =  (dic[i][0],dic[i][1].encode('utf-8'),dic[i][2].encode('utf-8'), dic[i][3].encode('utf-8'), dic[i][4].encode('utf-8'))
+    print dic
+    mine=[]
+    for i in dic:
+        if i[3]==curr_user:
+            mine.append(i)
+    print mine
+    conn.close()
+
+
+
+    return render_template('myposts.html',DATA=mine,user=curr_user)
+
 
 @app.route('/uploads/<filename>')
 def send_file(filename):
@@ -83,6 +120,42 @@ def send_file2(filename):
 def send_file3(filename,number):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
+
+@app.route('/edit/<number>',methods=['GET','POST'])
+@login_required
+def edit(number):
+    conn=sqlite3.connect('test.db')
+    user=session['user']
+    cursor=conn.execute("SELECT id ,caption,image,creator,time from POST WHERE id="+number)
+    post=cursor.fetchall()
+    if request.method == 'POST':
+        print "it worked!"
+        now = datetime.datetime.now()
+        time = now.strftime("%Y-%m-%d %H:%M")
+        cap = request.form['caption']
+        file = request.files['image']
+        id=request.form['id']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = UPLOAD_FOLDER + filename
+        print id
+        print type(id)
+        cursor.execute("UPDATE POST SET  CAPTION= ? ,IMAGE = ?,CREATOR = ?,TIME = ? WHERE id= ? ",(cap,path,user,time,id))
+        conn.commit()
+        cursor=conn.execute("SELECT id ,caption,image,creator,time from POST WHERE id="+number)
+        post=cursor.fetchall()
+        conn.close()
+    print post
+    conn.close()
+    if post==[]:
+        abort(403)
+    elif post[0][3]!=user:
+        abort (403)
+    else:
+        return render_template('edit.html',DATA=post)
+
+
 @app.route('/post/<number>',  methods=['GET', 'POST'])
 @login_required
 def post(number):
@@ -95,6 +168,7 @@ def post(number):
             print 1
             user = x
             break
+    user=session['user']
 
     if request.method == 'POST':
         now = datetime.datetime.now()
@@ -141,6 +215,7 @@ def post(number):
 @app.route('/logout')
 @login_required
 def logout():
+    session.pop('user',None)
     session.pop('logged_in', None)
     print session
     flash('you were just logged out!')
@@ -163,6 +238,7 @@ def login():
             if new_username == row[0] and request.form['password'] == row[1]:
                 session['logged_in'] = True
                 session[username] = True
+                session['user']=username
                 flash('you were just logged in!')
                 return redirect(url_for('welcome'))
         else:
