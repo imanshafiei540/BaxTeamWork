@@ -63,7 +63,7 @@
             <div style="background-color: lightgray" class="ui segment">
               <div class="ui big centerd image">
           <div class="ui black ribbon label">
-            <i class="hotel icon"></i> POST{{ID}}
+            <i class="hotel icon"></i> POST FROM {{pc}} IN {{pt}}
           </div>
           <img src="{{ IMG }}">
     </div>
@@ -78,15 +78,15 @@
 
       <div class="comment">
         <div style="height: 1cm" class="avatar">
-          <img src="http://semantic-ui.com/images/avatar/small/matt.jpg">
+          <img src="{{comment_content[2]}}">
         </div>
         <div class="content">
-          <a class="author">Matt</a>
+          <a class="author">{{comment_content[1]}}</a>
           <div class="metadata">
-            <span class="date">Today at 5:42PM</span>
+            <span class="date">{{comment_content[3]}}</span>
           </div>
           <div class="text">
-            {{com_text}}
+            {{comment_content[0]}}
           </div>
         </div>
           <div class="comments">
@@ -98,15 +98,15 @@
 
           <div class="comment">
             <div style="height: 1cm" class="avatar">
-              <img src="http://semantic-ui.com/images/avatar/small/jenny.jpg">
+              <img src="{{rep_dic[number2][2]}}">
             </div>
             <div class="content">
-              <a class="author">Jenny Hess</a>
+              <a class="author">{{rep_dic[number2][1]}}</a>
               <div class="metadata">
-                <span class="date">Salam</span>
+                <span class="date">{{rep_dic[number2][3]}}</span>
               </div>
               <div class="text">
-                {{x}}
+                {{rep_dic[number2][0]}}
               </div>
             </div>
           </div>
