@@ -69,6 +69,11 @@ def welcome():
 
     return render_template('hello.html',DATA = dic ,user = user)
 
+@app.route('/mypanel', methods=['GET', 'POST'])
+@login_required
+def panel():
+    return render_template('panel.html')
+
 
 @app.route('/uploads/<filename>')
 def send_file(filename):
