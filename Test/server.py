@@ -89,31 +89,42 @@ def get_all_users( json_str = False ):
 @app.route('/mypanel', methods=['GET', 'POST'])
 @login_required
 def panel():
+    user=session['user']
+    con=sqlite3.connect('login.db')
+    cur = con.execute('select * from logint WHERE id=%s' % get_user_id(user))
+    data = cur.fetchall()
+
     if request.method == 'POST':
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         status = request.form['status']
         oldpassword = request.form['oldpassword']
         newpassword = request.form['newpassword']
-        user=session['user']
-        con=sqlite3.connect('login.db')
-        cur = con.execute('select * from logint WHERE id=%s' % get_user_id(user))
-        data = cur.fetchall()
         file = request.files['image']
-
+        path = data[0][4]
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        path = UPLOAD_FOLDER + filename
+
+            path = UPLOAD_FOLDER + filename
 
         if status:
-            cur.execute("UPDATE logint SET status WHERE id=?",(status,data[0][3]))
+            cur.execute("UPDATE logint SET status=? WHERE id=?",(status,data[0][3]))
             con.commit()
 
 
 
-        if firstname or lastname or path:
-            cur.execute("UPDATE logint SET  firstname=? , lastname=?, user_image=? WHERE id=?",(firstname,lastname,path,data[0][3]))
+
+        if path:
+            cur.execute("UPDATE logint SET  user_image=? WHERE id=?",(path,data[0][3]))
+            con.commit()
+
+        if lastname:
+            cur.execute("UPDATE logint SET  lastname=? WHERE id=?",(lastname,data[0][3]))
+            con.commit()
+
+        if firstname:
+            cur.execute("UPDATE logint SET  firstname=? WHERE id=?",(firstname,data[0][3]))
             con.commit()
 
 
@@ -125,7 +136,7 @@ def panel():
 
 
 
-    return render_template('panel.html')
+    return render_template('panel.html',data=data)
 
 def get_user_id(user):
     con=sqlite3.connect('login.db')

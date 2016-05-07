@@ -52,7 +52,7 @@ body{text-align:center;
 
 </head>
 
-<body style="background-color: lightseagreen;">
+<div style="background-color: lightseagreen;">
 <h2 style="padding-top: 10%;padding-bottom: 6%" class="ui center aligned icon header">
   <i class="circular users icon"></i>
   Niggas's Socia Network
@@ -79,7 +79,8 @@ body{text-align:center;
         </div>
     </div>
 </section>
-
+    <div style="padding-bottom: 10%" class="row">
+<div class="col-md-offset-1 col-md-7">
 <div class="ui left aligned container">
   <form method="post" action="" enctype="multipart/form-data" class="ui form">
   <h4 class="ui dividing header">User Information</h4>
@@ -98,15 +99,15 @@ body{text-align:center;
       <label>Change Password</label>
     <div class="two fields">
       <div class="field">
-        <input type="text" name="oldpassword" placeholder="Old Password">
+        <input type="password" name="oldpassword" placeholder="Old Password">
       </div>
 
       <div class="field">
-        <input type="text" name="newpassword" placeholder="New Password">
+        <input type="password" name="newpassword" placeholder="New Password">
       </div>
     </div>
       <label>Write Your Status</label>
-      <textarea></textarea>
+      <textarea name="status"></textarea>
       <label>Change Your Avatar</label>
       <div class="fileupload fileupload-new" data-provides="fileupload">
     <span class="btn btn-primary btn-file"><span class="fileupload-new">Select file</span>
@@ -119,8 +120,20 @@ body{text-align:center;
       <button type="submit" class="ui blue fluid button" >Do Your Changes</button>
       </form>
 </div>
-
-
+</div>
+<div class="col-md-4">
+    <div class="ui card">
+          <div class="image">
+            <img src="{{data[0][4]}}">
+          </div>
+          <div class="content">
+            <strong class="header">{{data[0][0]}}</strong>
+            <strong class="header">{{data[0][5]}} {{data[0][6]}}</strong>
+            <div class="description">{{data[0][7]}}</div>
+          </div>
+    </div>
+</div>
+</div>
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/SmoothScroll.js') }}"></script>
