@@ -1,0 +1,149 @@
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+	<title>title</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style>
+@font-face {
+    font-family: "MyFont";
+    src: url(Far_DastNevis.otf) format("truetype");
+}
+body{
+    font-family: MyFont;
+}
+.navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+
+  .carousel-inner img {
+      width: 100%;
+      margin: auto;
+      min-height:200px;
+  }
+
+
+  @media (max-width: 600px) {
+    .carousel-caption {
+      display: none;
+    }
+  }
+.nav li{
+        display: inline;
+        padding-right: 1cm;
+        }
+    </style>
+</head>
+<body >
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">سایت آزمایشی</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+
+      <li><a href="#">تماس با ما</a></li>
+      <li><a href="#">قوانین سایت</a></li>
+      <li class="active"><a href="main.html">صفحه اصلی</a></li>
+    </ul>
+    <ul class="nav navbar-nav">
+      <li><a style="font-size: medium" href="/registration"> ثبت نام<span style="padding-left: 10px" class="glyphicon glyphicon-user"></span></a></li>
+      <li><a style="font-size: medium" href="/login"> ورود<span style="padding-left: 10px" class="glyphicon glyphicon-log-in"></span></a></li>
+    </ul>
+  </div>
+</nav>
+
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+    </ol>
+
+
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="{{ url_for('static', filename='images/tiger.jpg') }}" alt="Image">
+        <div class="carousel-caption">
+          <h3>حیات وحش</h3>
+          <p>بـــــــــبر</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="money.jpg" alt="Image">
+        <div class="carousel-caption">
+          <h3>درآمد بیشتر</h3>
+          <p>چگونه درآمدی بالا داشته باشیم</p>
+        </div>
+      </div>
+    </div>
+
+
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<div class="container text-center">
+  <h3>این یک سایت آزمایشی است</h3><br>
+  <div class="row">
+    <div class="col-sm-4">
+      <img src="{{ url_for('static', filename='images/HTML.jpg') }}" class="img-responsive" style="width:100%; height: 50%;margin-bottom: 20px" alt="Image">
+      <p>آموزش HTML</p>
+    </div>
+    <div class="col-sm-4">
+      <img src="{{ url_for('static', filename='images/php.jpg') }}" class="img-responsive" style="width:100%; height: 50%;margin-bottom: 20px" alt="Image">
+      <p>آموزش PHP</p>
+    </div>
+    <div class="col-sm-4">
+      <div class="well">
+       <p>آیا می دانستید که ...تنهاچیزی که دراسیدحل نمی شود الماس است و فقط خیلی زیاد آن را از بین می برد.</p>
+      </div>
+      <div class="well">
+       <p>آیا می دانستید که ... مغز فیزیکدان نابغه ،آلبرت انیشتن ۱۵ درصدازحجم مغزانسان عادی بزرگتربود.</p>
+      </div>
+    </div>
+  </div>
+</div><br>
+
+<footer class="container-fluid text-center">
+  <div class="col-md-4">
+      <h3>ارتباط با ما</h3>
+      <a href="#">برای مشاهده راه های ارتباطی کلیک کنید</a>
+  </div>
+
+  <div class="col-md-4">
+      <h3>ارتباط با ما</h3>
+      <a href="#">برای مشاهده راه های ارتباطی کلیک کنید</a>
+  </div>
+
+
+  <div class="col-md-4">
+      <h3>ارتباط با ما</h3>
+      <a href="#">برای مشاهده راه های ارتباطی کلیک کنید</a>
+  </div>
+
+
+</footer>
+
+</body>
+</html>

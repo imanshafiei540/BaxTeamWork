@@ -1,0 +1,158 @@
+<html lang="fa">
+<head>
+    <link href="{{ url_for('static', filename='css/semantic.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.css" rel="stylesheet">
+    <!-- Site made with  Website Builder v2.9, https://.com -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content=" v2.9, .com">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="assets/images/logo.png" type="image/x-icon">
+  <meta name="description" content="Free Responsive Website Maker. Create awesome mobile-first websites. Easy and fast - No coding!">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:700,400&amp;subset=cyrillic,latin,greek,vietnamese">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/mbr-additional.css') }}" type="text/css">
+
+
+  <!-- Paste any valid HTML code here. The code will be inserted to the end of <head> section, right before </head> -->
+    <style>
+        /* leave this part out */
+body{text-align:center;
+    padding-top:30px;
+
+}
+/* leave this part out */
+
+.clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
+.clearfix:after{clear:both;}
+.hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;}
+.input-block-level{display:block;width:100%;min-height:30px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+.btn-file{overflow:hidden;position:relative;vertical-align:middle;}.btn-file>input{position:absolute;top:0;right:0;margin:0;opacity:0;filter:alpha(opacity=0);transform:translate(-300px, 0) scale(4);font-size:23px;direction:ltr;cursor:pointer;}
+.fileupload{margin-bottom:9px;}.fileupload .uneditable-input{display:inline-block;margin-bottom:0px;vertical-align:middle;cursor:text;}
+.fileupload .thumbnail{overflow:hidden;display:inline-block;margin-bottom:5px;vertical-align:middle;text-align:center;}.fileupload .thumbnail>img{display:inline-block;vertical-align:middle;max-height:100%;}
+.fileupload .btn{vertical-align:middle;}
+.fileupload-exists .fileupload-new,.fileupload-new .fileupload-exists{display:none;}
+.fileupload-inline .fileupload-controls{display:inline;}
+.fileupload-new .input-append .btn-file{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
+.thumbnail-borderless .thumbnail{border:none;padding:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.fileupload-new.thumbnail-borderless .thumbnail{border:1px solid #ddd;}
+.control-group.warning .fileupload .uneditable-input{color:#a47e3c;border-color:#a47e3c;}
+.control-group.warning .fileupload .fileupload-preview{color:#a47e3c;}
+.control-group.warning .fileupload .thumbnail{border-color:#a47e3c;}
+.control-group.error .fileupload .uneditable-input{color:#b94a48;border-color:#b94a48;}
+.control-group.error .fileupload .fileupload-preview{color:#b94a48;}
+.control-group.error .fileupload .thumbnail{border-color:#b94a48;}
+.control-group.success .fileupload .uneditable-input{color:#468847;border-color:#468847;}
+.control-group.success .fileupload .fileupload-preview{color:#468847;}
+.control-group.success .fileupload .thumbnail{border-color:#468847;}
+    </style>
+
+</head>
+
+<body style="background-color: lightseagreen;">
+<h2 style="padding-top: 10%;padding-bottom: 6%" class="ui center aligned icon header">
+  <i class="circular users icon"></i>
+  Niggas's Socia Network
+</h2>
+
+<section class="mbr-navbar mbr-navbar--freeze mbr-navbar--absolute mbr-navbar--transparent mbr-navbar--sticky mbr-navbar--auto-collapse" id="menu-5">
+    <div class="mbr-navbar__section mbr-section">
+        <div class="mbr-section__container container">
+            <div class="mbr-navbar__container">
+                <div class="mbr-navbar__column mbr-navbar__column--s mbr-navbar__brand">
+                    <span class="mbr-navbar__brand-link mbr-brand mbr-brand--inline">
+                        <span class="mbr-brand__logo"><a href="/welcome"><img class="mbr-navbar__brand-img mbr-brand__img" src="{{ url_for('static', filename='img/logo.png')}}" alt=""></a></span>
+                        <span class="mbr-brand__name"><a class="mbr-brand__name text-white" href="https://.com"></a></span>
+                    </span>
+                </div>
+                <div class="mbr-navbar__hamburger mbr-hamburger text-white"><span class="mbr-hamburger__line"></span></div>
+                <div class="mbr-navbar__column mbr-navbar__menu">
+                    <nav class="mbr-navbar__menu-box mbr-navbar__menu-box--inline-right">
+                        <div class="mbr-navbar__column"><ul class="mbr-navbar__items mbr-navbar__items--right mbr-buttons mbr-buttons--freeze mbr-buttons--right btn-decorator mbr-buttons--active mbr-buttons--only-links"><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/logout">Logout</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/mypanel">Edit My Profile</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/myposts">My Posts</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/people">People</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/welcome">Global Posts</a></li><li class="mbr-navbar__item"><a class="mbr-buttons__link btn text-white" href="/welcome">Home</a></li></ul></div>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/SmoothScroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+
+
+
+
+
+<div style="padding-left: 10%;padding-right: 10%" class="ui grid">
+        <div class="row">
+            {% for x in DATA%}
+          <div style="padding-bottom: 1cm" class="four wide column">
+<div style="background-color: lightgray" class="ui segment">
+              <div class="ui big image">
+          <div class="ui black ribbon label">
+            <i class="hotel icon"></i> POST FROM {{x[3]}} IN {{ x[4] }}
+          </div>
+
+          <img width="100%" height="100%" src="../{{x[2]}}">
+    </div>
+
+          </div>
+              </div>
+<div class="twelve wide column">
+                       <div style="height: 200px"  class="ui ignored info message">
+                    <p >{{x[1]}}</p>
+
+    </div>
+            </div>
+
+{% endfor %}
+
+
+
+
+
+
+</div>
+    </div>
+
+
+
+
+      <form enctype="multipart/form-data" style="padding-right: 10%;padding-left: 10%" method="post" action="" class="ui reply form">
+        <div class="field">
+          <textarea name="caption">{{DATA[0][1]}}</textarea>
+            <input name="id" type="text" hidden value="{{DATA[0][0]}}">
+        </div>
+<div class="fileupload fileupload-new" data-provides="fileupload">
+    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select file</span>
+    <span class="fileupload-exists">Change</span>         <input type="file" name="image" /></span>
+    <span class="fileupload-preview"></span>
+    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+  </div>
+          <button type="submit" class="fluid ui blue button">Update it!</button>
+
+
+      </form>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+
+
+
+
+
+
+<script>
+    !function(e){var t=function(t,n){this.$element=e(t),this.type=this.$element.data("uploadtype")||(this.$element.find(".thumbnail").length>0?"image":"file"),this.$input=this.$element.find(":file");if(this.$input.length===0)return;this.name=this.$input.attr("name")||n.name,this.$hidden=this.$element.find('input[type=hidden][name="'+this.name+'"]'),this.$hidden.length===0&&(this.$hidden=e('<input type="hidden" />'),this.$element.prepend(this.$hidden)),this.$preview=this.$element.find(".fileupload-preview");var r=this.$preview.css("height");this.$preview.css("display")!="inline"&&r!="0px"&&r!="none"&&this.$preview.css("line-height",r),this.original={exists:this.$element.hasClass("fileupload-exists"),preview:this.$preview.html(),hiddenVal:this.$hidden.val()},this.$remove=this.$element.find('[data-dismiss="fileupload"]'),this.$element.find('[data-trigger="fileupload"]').on("click.fileupload",e.proxy(this.trigger,this)),this.listen()};t.prototype={listen:function(){this.$input.on("change.fileupload",e.proxy(this.change,this)),e(this.$input[0].form).on("reset.fileupload",e.proxy(this.reset,this)),this.$remove&&this.$remove.on("click.fileupload",e.proxy(this.clear,this))},change:function(e,t){if(t==="clear")return;var n=e.target.files!==undefined?e.target.files[0]:e.target.value?{name:e.target.value.replace(/^.+\\/,"")}:null;if(!n){this.clear();return}this.$hidden.val(""),this.$hidden.attr("name",""),this.$input.attr("name",this.name);if(this.type==="image"&&this.$preview.length>0&&(typeof n.type!="undefined"?n.type.match("image.*"):n.name.match(/\.(gif|png|jpe?g)$/i))&&typeof FileReader!="undefined"){var r=new FileReader,i=this.$preview,s=this.$element;r.onload=function(e){i.html('<img src="'+e.target.result+'" '+(i.css("max-height")!="none"?'style="max-height: '+i.css("max-height")+';"':"")+" />"),s.addClass("fileupload-exists").removeClass("fileupload-new")},r.readAsDataURL(n)}else this.$preview.text(n.name),this.$element.addClass("fileupload-exists").removeClass("fileupload-new")},clear:function(e){this.$hidden.val(""),this.$hidden.attr("name",this.name),this.$input.attr("name","");if(navigator.userAgent.match(/msie/i)){var t=this.$input.clone(!0);this.$input.after(t),this.$input.remove(),this.$input=t}else this.$input.val("");this.$preview.html(""),this.$element.addClass("fileupload-new").removeClass("fileupload-exists"),e&&(this.$input.trigger("change",["clear"]),e.preventDefault())},reset:function(e){this.clear(),this.$hidden.val(this.original.hiddenVal),this.$preview.html(this.original.preview),this.original.exists?this.$element.addClass("fileupload-exists").removeClass("fileupload-new"):this.$element.addClass("fileupload-new").removeClass("fileupload-exists")},trigger:function(e){this.$input.trigger("click"),e.preventDefault()}},e.fn.fileupload=function(n){return this.each(function(){var r=e(this),i=r.data("fileupload");i||r.data("fileupload",i=new t(this,n)),typeof n=="string"&&i[n]()})},e.fn.fileupload.Constructor=t,e(document).on("click.fileupload.data-api",'[data-provides="fileupload"]',function(t){var n=e(this);if(n.data("fileupload"))return;n.fileupload(n.data());var r=e(t.target).closest('[data-dismiss="fileupload"],[data-trigger="fileupload"]');r.length>0&&(r.trigger("click.fileupload"),t.preventDefault())})}(window.jQuery)
+</script>
+</body>
+
+</html>

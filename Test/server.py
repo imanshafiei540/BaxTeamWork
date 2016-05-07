@@ -42,22 +42,21 @@ def index():
 @login_required
 def welcome():
     conn = sqlite3.connect('test.db')
-    flag = 0
-    for x in session:
-        flag += 1
-        if flag == 2:
-            user = x
-            break
+    user=session['user']
 
     if request.method == 'POST':
         now = datetime.datetime.now()
         time = now.strftime("%Y-%m-%d %H:%M")
+        cap = 'No Caption'
         cap = request.form['caption']
         file = request.files['image']
+        path = 'uploads/image.png'
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        path = UPLOAD_FOLDER + filename
+
+            path = UPLOAD_FOLDER + filename
+
         conn.execute("insert into POST (CAPTION, IMAGE, CREATOR,TIME) values (?, ?, ?,?);",(cap, path, user,time ))
         conn.commit()
         conn.close()
@@ -68,11 +67,76 @@ def welcome():
             dic[i] =  (dic[i][0],dic[i][1].encode('utf-8'),dic[i][2].encode('utf-8'), dic[i][3].encode('utf-8'), dic[i][4].encode('utf-8'))
 
     return render_template('hello.html',DATA = dic ,user = user)
+DB = "./login.db"
 
+def get_all_users( json_str = False ):
+    conn = sqlite3.connect( DB )
+    conn.row_factory = sqlite3.Row
+    db = conn.cursor()
+
+    rows = db.execute('''
+    SELECT * from logint
+    ''').fetchall()
+
+    conn.commit()
+    conn.close()
+    dic = {}
+    if json_str:
+        return ( [dict(ix) for ix in rows] )
+
+
+    return rows
 @app.route('/mypanel', methods=['GET', 'POST'])
 @login_required
 def panel():
+    if request.method == 'POST':
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        status = request.form['status']
+        oldpassword = request.form['oldpassword']
+        newpassword = request.form['newpassword']
+        user=session['user']
+        con=sqlite3.connect('login.db')
+        cur = con.execute('select * from logint WHERE id=%s' % get_user_id(user))
+        data = cur.fetchall()
+        file = request.files['image']
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = UPLOAD_FOLDER + filename
+
+        if status:
+            cur.execute("UPDATE logint SET status WHERE id=?",(status,data[0][3]))
+            con.commit()
+
+
+
+        if firstname or lastname or path:
+            cur.execute("UPDATE logint SET  firstname=? , lastname=?, user_image=? WHERE id=?",(firstname,lastname,path,data[0][3]))
+            con.commit()
+
+
+
+
+        if data[0][1].encode('utf-8') == oldpassword:
+            cur.execute("UPDATE logint SET  password=? WHERE id=?",(newpassword,data[0][3]))
+            con.commit()
+
+
+
     return render_template('panel.html')
+
+def get_user_id(user):
+    con=sqlite3.connect('login.db')
+    cur = con.execute('select * from logint')
+    data = cur.fetchall()
+    user=session['user']
+    for item in data:
+        if user == item[0]:
+            return item[3]
+
+
 
 
 @app.route('/uploads/<filename>')
@@ -88,18 +152,86 @@ def send_file2(filename):
 def send_file3(filename,number):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
+@app.route('/edit/<number>',methods=['GET','POST'])
+@login_required
+def edit(number):
+    conn=sqlite3.connect('test.db')
+    user=session['user']
+    cursor=conn.execute("SELECT id ,caption,image,creator,time from POST WHERE id="+number)
+    post=cursor.fetchall()
+    if request.method == 'POST':
+
+        now = datetime.datetime.now()
+        time = now.strftime("%Y-%m-%d %H:%M")
+        cap = request.form['caption']
+        file = request.files['image']
+        id=request.form['id']
+        path = 'uploads/image.png'
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            path = UPLOAD_FOLDER + filename
+
+
+
+        cursor.execute("UPDATE POST SET  CAPTION= ? ,IMAGE = ?,CREATOR = ?,TIME = ? WHERE id= ? ",(cap,path,user,time,id))
+        conn.commit()
+        cursor=conn.execute("SELECT id ,caption,image,creator,time from POST WHERE id="+number)
+        post=cursor.fetchall()
+        conn.close()
+
+    conn.close()
+    if post==[]:
+        abort(403)
+    elif post[0][3]!=user:
+        abort (403)
+
+    else:
+
+        return render_template('edit.html',DATA=post)
+
+@app.route('/myposts' , methods=["GET","POST"])
+def myposts():
+    conn =sqlite3.connect('test.db')
+    curr_user=session['user']
+
+    cursor=conn.execute("SELECT id,caption,image,creator,time from POST")
+    dic = cursor.fetchall()
+    if request.method == 'POST':
+
+        now = datetime.datetime.now()
+        time = now.strftime("%Y-%m-%d %H:%M")
+        cap = request.form['caption']
+        file = request.files['image']
+        id=request.form['id']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = UPLOAD_FOLDER + filename
+        cursor.execute("UPDATE POST SET  CAPTION= ? ,IMAGE = ?,CREATOR = ?,TIME = ? WHERE id= ? ",(cap,path,user,time,id))
+        conn.commit()
+        conn.close()
+
+    for i in range(len(dic)):
+            dic[i] =  (dic[i][0],dic[i][1].encode('utf-8'),dic[i][2].encode('utf-8'), dic[i][3].encode('utf-8'), dic[i][4].encode('utf-8'))
+
+    mine=[]
+    for i in dic:
+        if i[3]==curr_user:
+            mine.append(i)
+
+    conn.close()
+
+
+
+    return render_template('myposts.html',DATA=mine,user=curr_user)
+
 @app.route('/post/<number>',  methods=['GET', 'POST'])
 @login_required
 def post(number):
     conn = sqlite3.connect('test.db')
-    flag = 0
-
-    for x in session:
-        flag += 1
-        if flag == 2:
-
-            user = x
-            break
+    user=session['user']
 
     if request.method == 'POST':
         now = datetime.datetime.now()
@@ -107,7 +239,7 @@ def post(number):
         COMMENT = request.form['comment']
 
 
-        conn.execute("insert into COMMENT (comment, F_KEY,creator,time) values (?, ?,?,?);",(COMMENT, number, user, time))
+        conn.execute("insert into COMMENT (comment, F_KEY,creator,time,user_image) values (?, ?,?,?,?);",(COMMENT, number, user, time, getUserImage(user)))
         conn.commit()
         conn.close()
 
@@ -123,16 +255,18 @@ def post(number):
             comment_time = row[4]
             break
 
-    cursor2 = conn.execute("SELECT ID, comment, F_KEY, creator, time from COMMENT")
+    cursor2 = conn.execute("SELECT ID, comment, F_KEY, creator, time, user_image from COMMENT")
     com_dic = {}
 
     for row in cursor2:
         if str(row[2]) == number.encode('utf-8'):
+            user_img = row[5]
             COM_ID = row[0]
             COM = row[1]
             cre = row[3]
             time = row[4]
-            com_dic[str(COM_ID)] = (COM.encode('utf-8'), cre.encode('utf-8'), time.encode('utf-8'))
+
+            com_dic[str(COM_ID)] = (COM.encode('utf-8'), cre.encode('utf-8'), time.encode('utf-8'),user_img.encode('utf-8'))
     cursor3 = conn.execute("SELECT ID, reply, F_KEY_POST,F_KEY_COMMENT, creator, time, user_image from REPLY")
     rep_dic = {}
     for row in cursor3:
@@ -150,7 +284,7 @@ def post(number):
 @login_required
 def logout():
     session.pop('logged_in', None)
-
+    session.pop('user',None)
     flash('you were just logged out!')
     return redirect(url_for('welcome'))
 
@@ -172,7 +306,7 @@ def login():
             if new_username == row[0] and request.form['password'] == row[1]:
                 user_img = row[4]
                 session['logged_in'] = True
-                session[username] = True
+                session['user']=username
                 flash('you were just logged in!')
                 return redirect(url_for('welcome'))
         else:
@@ -238,13 +372,7 @@ def getUserImage(user):
 
 def reply(number,number2):
 
-    flag = 0
-    for x in session:
-        flag += 1
-        if flag == 2:
-            user = x
-            break
-
+    user=session['user']
     conn = sqlite3.connect('test.db')
     if request.method == 'POST':
         now = datetime.datetime.now()
@@ -306,7 +434,9 @@ def reply(number,number2):
 @login_required
 
 def people():
-    return render_template('people.html')
+    data = get_all_users()
+
+    return render_template('people.html', data = data)
 
 
 if __name__ == '__main__':
